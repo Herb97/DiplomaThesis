@@ -1,0 +1,151 @@
+/******************************************************************************
+; Resideo Residential Thermal Solutions                                       *
+; Turanka 96/1236                                                             *
+; 627 00 Brno, Czech Republic                                                 *
+;                                                                             *
+; Creation date: 2020-04-12           Author: Stepanek, Michal                *
+;******************************************************************************
+;
+; File: AD7791_Register.C
+;
+;******************************************************************************
+; SVN header
+;  $Id: AD7791_Register.C 110622 2020-11-26 10:30:35Z Stepanek, Michal $
+******************************************************************************/
+
+/*
+AD7791 register access
+*/
+
+#include "..\Endian\Endian.H"				// ulEndian_MsbLsbToU24(), uwEndian_MsbLsbToU16()
+#include ".\AD7791_Register.H"				// OWN header
+#include "AD7791.CFG"						// Configuration
+
+#define AD7790_ZERO	0x8000	//  a zero differential input voltage resulting in a code of 1000 0000 0000 0000 binary
+#define AD7791_ZERO	0x800000	//  zero differential input will result in an output code of 0x800000
+
+void AD7791_Register_Communications_Write(AD7791_CR_t lubCommunicationRegister)
+{
+	AD7791_CS_0;
+	AD7791_CR_t lubCommunications;
+	lubCommunications.value = 0;
+	lubCommunications.CH = AD7791_CH_DIFFERENTIAL_CHANNEL;
+	lubCommunications.RS = AD7791_RS_COMMUNICATIONS_REGISTER_WRITE;
+	SPI_BYTE(lubCommunications.value);
+	SPI_BYTE(lubCommunicationRegister.value);
+	AD7791_CS_1;
+}
+
+uint8_t ubAD7791_Register_Status_Read(void)
+{
+	uint8_t lubResult;
+	AD7791_CS_0;
+	AD7791_CR_t lubCommunications;
+	lubCommunications.value = 0;
+	lubCommunications.CH = AD7791_CH_DIFFERENTIAL_CHANNEL;
+	lubCommunications.RS = AD7791_RS_STATUS_REGISTER_READ;
+	SPI_BYTE(lubCommunications.value);
+	lubResult = SPI_BYTE(0xFF);
+	AD7791_CS_1;
+	return lubResult;
+}
+
+void AD7791_Register_Mode_Write(AD7791_MR_t lubModeRegister)
+{
+	AD7791_CS_0;
+	AD7791_CR_t lubCommunications;
+	lubCommunications.value = 0;
+	lubCommunications.CH = AD7791_CH_DIFFERENTIAL_CHANNEL;
+	lubCommunications.RS = AD7791_RS_MODE_REGISTER_WRITE;
+	SPI_BYTE(lubCommunications.value);
+	SPI_BYTE(lubModeRegister.value);
+	AD7791_CS_1;
+}
+
+AD7791_MR_t ubAD7791_Register_Mode_Read(void)
+{
+	AD7791_MR_t lubResult;
+	AD7791_CS_0;
+	AD7791_CR_t lubCommunications;
+	lubCommunications.value = 0;
+	lubCommunications.CH = AD7791_CH_DIFFERENTIAL_CHANNEL;
+	lubCommunications.RS = AD7791_RS_MODE_REGISTER_READ;
+	SPI_BYTE(lubCommunications.value);
+	lubResult.value = SPI_BYTE(0xFF);
+	AD7791_CS_1;
+	return lubResult;
+}
+
+void AD7791_Register_Filter_Write(AD7791_FR_t lubFilterRegister)
+{
+	AD7791_CS_0;
+	AD7791_CR_t lubCommunications;
+	lubCommunications.value = 0;
+	lubCommunications.CH = AD7791_CH_DIFFERENTIAL_CHANNEL;
+	lubCommunications.RS = AD7791_RS_FILTER_REGISTER_WRITE;
+	SPI_BYTE(lubCommunications.value);
+	SPI_BYTE(lubFilterRegister.value);
+	AD7791_CS_1;
+}
+
+AD7791_FR_t ubAD7791_Register_Filter_Read(void)
+{
+	AD7791_FR_t lubResult;
+	AD7791_CS_0;
+	AD7791_CR_t lubCommunications;
+	lubCommunications.value = 0;
+	lubCommunications.CH = AD7791_CH_DIFFERENTIAL_CHANNEL;
+	lubCommunications.RS = AD7791_RS_FILTER_REGISTER_READ;
+	SPI_BYTE(lubCommunications.value);
+	lubResult.value = SPI_BYTE(0xFF);
+	AD7791_CS_1;
+	return lubResult;
+}
+
+int32_t slAD7791_Register_Data_Read(void)
+{
+	uint8_t lubData[3];
+	
+	AD7791_CS_0;
+	AD7791_CR_t lubCommunications;
+	lubCommunications.value = 0;
+	lubCommunications.CH = AD7791_CH_DIFFERENTIAL_CHANNEL;
+	lubCommunications.RS = AD7791_RS_DATA_REGISTER_READ;
+	SPI_BYTE(lubCommunications.value);
+	lubData[0] = SPI_BYTE(0xFF);	// MSB
+	lubData[1] = SPI_BYTE(0xFF);
+	lubData[2] = SPI_BYTE(0xFF);	// LSB
+	AD7791_CS_1;
+	return ulEndian_MsbLsbToU24(&lubData[0]) - AD7791_ZERO;
+}
+
+int16_t swAD7790_Register_Data_Read(void)
+{
+	uint8_t lubData[2];
+	
+	AD7791_CS_0;
+	AD7791_CR_t lubCommunications;
+	lubCommunications.value = 0;
+	lubCommunications.CH = AD7791_CH_DIFFERENTIAL_CHANNEL;
+	lubCommunications.RS = AD7791_RS_DATA_REGISTER_READ;
+	SPI_BYTE(lubCommunications.value);
+	lubData[0] = SPI_BYTE(0xFF);	// MSB
+	lubData[1] = SPI_BYTE(0xFF);	// LSB
+	AD7791_CS_1;
+	return uwEndian_MsbLsbToU16(&lubData[0])-AD7790_ZERO;
+}
+
+void AD7791_CS_Lo(void)
+{
+	AD7791_CS_0;
+}
+
+void AD7791_CS_Hi(void)
+{
+	AD7791_CS_1;
+}
+
+uint32_t ulAD7791_RDY_Get(void)
+{
+	return AD7791_RDY_GET();
+}

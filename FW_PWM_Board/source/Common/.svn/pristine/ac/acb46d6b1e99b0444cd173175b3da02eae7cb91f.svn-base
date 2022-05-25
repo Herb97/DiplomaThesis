@@ -1,0 +1,126 @@
+/******************************************************************************
+; Resideo Residential Thermal Solutions                                       *
+; Turanka 96/1236                                                             *
+; 627 00 Brno, Czech Republic                                                 *
+;                                                                             *
+; Creation date: 2020-04-12           Author: Stepanek, Michal                *
+;******************************************************************************
+;
+; File: AD7791_Register.H
+;
+;******************************************************************************
+; SVN header
+;  $Id$
+******************************************************************************/
+
+typedef enum
+{
+	AD7791_CH_DIFFERENTIAL_CHANNEL	= 0,
+	AD7791_CH_INTERNAL_SHORT		= 2,
+	AD7791_CH_VDD_MONITOR			= 3,
+}
+AD7791_CH_t;
+
+typedef enum
+{
+	AD7791_RS_COMMUNICATIONS_REGISTER_WRITE	= 0,
+	AD7791_RS_STATUS_REGISTER_READ			= 1,
+	AD7791_RS_MODE_REGISTER_WRITE			= 2,
+	AD7791_RS_MODE_REGISTER_READ			= 3,
+	AD7791_RS_FILTER_REGISTER_WRITE			= 4,
+	AD7791_RS_FILTER_REGISTER_READ			= 5,
+	AD7791_RS_DATA_REGISTER_WRITE			= 6,
+	AD7791_RS_DATA_REGISTER_READ			= 7,
+}
+AD7791_RS_t;
+
+typedef union
+{
+	uint8_t value;
+	struct
+	{
+		AD7791_CH_t	CH					:2;
+		uint8_t		CR2_ContinuousRead	:1;
+		AD7791_RS_t	RS					:3;	// including Read/Write
+		uint8_t		CR6_Zero			:1;
+		uint8_t		CR7_WriteEnable		:1;
+	};
+}
+AD7791_CR_t;
+
+
+typedef enum
+{
+	AD7791_MD_CONTINUOUS_CONVERSION	= 0,
+	AD7791_MD_SINGLE_CONVERSION		= 2,
+	AD7791_MD_POWER_DOWN			= 3,
+}
+AD7791_MD_t;
+
+typedef union
+{
+	uint8_t value;
+	struct
+	{
+		uint8_t		MR0_Zero					:1;
+		uint8_t		MR1_Buffered				:1;
+		uint8_t		MR2_Unipolar				:1;
+		uint8_t		MR3_BurnoutCurrentEnable	:1;
+		uint8_t		MR4_Zero					:1;
+		uint8_t		MR5_Zero					:1;
+		AD7791_MD_t	MD							:2;
+	};
+}
+AD7791_MR_t;
+
+typedef enum
+{
+	AD7791_FS_120HZ	= 0,
+	AD7791_FS_100HZ	= 1,
+	AD7791_FS_33HZ3	= 2,
+	AD7791_FS_20HZ	= 3,
+	AD7791_FS_16HZ6	= 4,
+	AD7791_FS_16HZ7	= 5,
+	AD7791_FS_13HZ3	= 6,
+	AD7791_FS_9HZ5	= 7,
+}
+AD7791_FS_t;
+
+typedef enum
+{
+	AD7791_CDIV_NORMAL_MODE			= 0,
+	AD7791_CDIV_CLOCK_DIVIDED_BY_2	= 1,
+	AD7791_CDIV_CLOCK_DIVIDED_BY_4	= 2,
+	AD7791_CDIV_CLOCK_DIVIDED_BY_8	= 3,
+}
+AD7791_CDIV_t;
+
+typedef union
+{
+	uint8_t value;
+	struct
+	{
+		AD7791_FS_t		FS			:3;
+		uint8_t			FR3_Zero	:1;
+		AD7791_CDIV_t	CDIV		:2;
+		uint8_t			FR6_Zero	:1;
+		uint8_t			FR7_Zero	:1;
+	};
+}
+AD7791_FR_t;
+
+/******************************************************************************
+; GLOBAL FUNCTIONS
+;*****************************************************************************/
+int32_t slAD7791_Register_Data_Read(void);
+AD7791_FR_t ubAD7791_Register_Filter_Read(void);
+AD7791_MR_t ubAD7791_Register_Mode_Read(void);
+uint8_t ubAD7791_Register_Status_Read(void);
+void AD7791_Register_Communications_Write(AD7791_CR_t lubCommunicationRegister);
+void AD7791_Register_Filter_Write(AD7791_FR_t lubFilterRegister);
+void AD7791_Register_Mode_Write(AD7791_MR_t lubModeRegister);
+int16_t swAD7790_Register_Data_Read(void);
+void AD7791_CS_Lo(void);
+void AD7791_CS_Hi(void);
+uint32_t ulAD7791_RDY_Get(void);
+

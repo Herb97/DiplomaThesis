@@ -1,0 +1,164 @@
+/******************************************************************************
+; Resideo Residential Thermal Solutions                                       *
+; Turanka 96/1236                                                             *
+; 627 00 Brno, Czech Republic                                                 *
+;                                                                             *
+; Creation date: 2018-07-04           Author: Stepanek, Michal                *
+;******************************************************************************
+;
+; File: DataTypesConversion.C
+;
+;******************************************************************************
+; SVN header
+;  $Id: DataTypesConversion.C 116952 2022-02-16 16:53:49Z Stepanek, Michal $
+******************************************************************************/
+
+/******************************************************************************
+; INCLUDE FILES
+;******************************************************************************/
+#include "..\..\..\Cfg\types.h"
+#include "..\..\Mod\Arithmetic\Limit.H"		// fLimit()
+#include ".\DataTypesConversion.H"			// OWN header
+
+/******************************************************************************
+; Procedure     : ubDataTypesConversion_u16_to_u8()
+; Description   : Limits luwValue from top to fit u8
+;******************************************************************************/
+u8 ubDataTypesConversion_u16_to_u8(u16 luwValue)
+{
+	return (luwValue>0xFFu)?0xFFu:luwValue;
+}
+
+/******************************************************************************
+; Procedure     : ubDataTypesConversion_s16_to_u8()
+; Description   : Limits luwValue from top to fit u8
+;******************************************************************************/
+u8 ubDataTypesConversion_s16_to_u8(s16 lswValue)
+{
+	if( lswValue < 0 )
+	{
+		lswValue = 0;
+	}
+	else if( lswValue > 255 )
+	{
+		lswValue = 255;
+	}
+	return (u8)lswValue;
+}
+
+/******************************************************************************
+; Procedure     : sbDataTypesConversion_s16_to_s8()
+; Description   : Limits lswValue to fit s8
+;******************************************************************************/
+s8 sbDataTypesConversion_s16_to_s8(s16 lswValue)
+{
+	if( lswValue < -128 )
+	{
+		lswValue = -128;
+	}
+	else if( lswValue > 0x7F )
+	{
+		lswValue = 0x7F;
+	}
+	return (s8)lswValue;
+}
+
+/******************************************************************************
+; Procedure     : ubDataTypesConversion_u32_to_u8()
+; Description   : Limits lulValue from top to fit u8
+;******************************************************************************/
+u8 ubDataTypesConversion_u32_to_u8(u32 lulValue)
+{
+	return (lulValue>0xFFu)?0xFFu:lulValue;
+}
+
+/******************************************************************************
+; Procedure     : uwDataTypesConversion_u32_to_u16()
+; Description   : Limits lswValue to fit u16
+;******************************************************************************/
+u16 uwDataTypesConversion_u32_to_u16(u32 lulValue)
+{
+	return (lulValue>0xFFFF)?0xFFFF:lulValue;
+}
+
+
+/******************************************************************************
+; Procedure		: uwDataTypesConversion_float_to_u16()
+; Description	: Converison of float32_t to u16, rounding to nearest
+; Input			: float32_t
+; Output		: u16
+;******************************************************************************/
+u16 uwDataTypesConversion_float_to_u16(float32_t f)
+{
+	f+=0.5f;	// rounding to nearest
+	f = fLimit(f, 0.0f, 65535.0f);
+	return (u16)(f);
+}
+
+
+/******************************************************************************
+; Procedure		: swDataTypesConversion_float_to_s16()
+; Description	: Converison of float32_t to s16, rounding to nearest
+; Input			: float32_t
+; Output		: s16
+;******************************************************************************/
+s16 swDataTypesConversion_float_to_s16(float32_t f)
+{
+	if(f >= 0)
+	{
+		f+=0.5f;	// rounding to nearest
+	}
+	else
+	{
+		f-=0.5f;	// rounding to nearest
+	}
+	f = fLimit(f, -32768.0f, 32767.0f);
+	return (s16)(f);
+}
+
+/******************************************************************************
+; Procedure		: ubDataTypesConversion_float_to_u8()
+; Description	: Converison of float32_t to u8, rounding to nearest
+; Input			: float32_t
+; Output		: u8
+;******************************************************************************/
+u8 ubDataTypesConversion_float_to_u8(float32_t f)
+{
+	f += 0.5f;	// rounding to nearest
+	f = fLimit(f, 0.0f, 255.0f);
+	return (s16)(f);
+}
+
+/******************************************************************************
+; Procedure		: DataTypesConversion_u32_to_string()
+; Description	: Converison of u32 to string, radix is 10.
+					From	0x00000000	0
+					To		0xFFFFFFFF	4294967295
+; Input			: unsigned 32 bits wide number
+; Output		: string (up to 10 characters + trailing zero)
+; Inspired by	: https://searchcode.com/codesearch/view/20251605/
+				  https://www.microchip.com/forums/m687600.aspx
+;******************************************************************************/
+void DataTypesConversion_u32_to_string(u32 lulInputNumber, u8 *pOutputString)
+{
+	u8 temp[10];		// length of 4294967295 without trailing zero (4294967295 ... 0xFFFFFFFF)
+	u8 lubIndex = 0u;
+
+	//construct a backward string of the number.
+	do
+	{
+		temp[lubIndex] = lulInputNumber % 10u;
+		lubIndex++;
+		lulInputNumber /= 10u;
+	} while (lulInputNumber > 0u);
+
+	//now reverse the string.
+	while (lubIndex > 0)
+	{
+		// while there are still characters
+		--lubIndex;
+		*pOutputString = temp[lubIndex] + '0';
+		pOutputString++;
+	}
+	*pOutputString = 0x00u; // add null termination.
+}

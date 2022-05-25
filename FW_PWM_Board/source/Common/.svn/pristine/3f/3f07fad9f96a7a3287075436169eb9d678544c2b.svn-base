@@ -1,0 +1,41 @@
+/******************************************************************************
+; Resideo Residential Thermal Solutions                                       *
+; Turanka 96/1236                                                             *
+; 627 00 Brno, Czech Republic                                                 *
+;                                                                             *
+; Creation date: 2019-06-26           Author: Stepanek, Michal                *
+;******************************************************************************
+;
+; File: ModbusFunctionCodes.H
+;
+;******************************************************************************
+; SVN header
+;  $Id$
+******************************************************************************/
+
+/*
+www.modbus.org/docs/Modbus_Application_Protocol_V1_1b.pdf
+*/
+
+/******************************************************************************
+; #DEFINE CONSTANTS
+;*****************************************************************************/
+#define MODBUS_FUNCTION_CODE_READ_COILS							0x01
+#define MODBUS_FUNCTION_CODE_READ_DISCRETE_INPUTS				0x02
+#define MODBUS_FUNCTION_CODE_READ_HOLDING_REGISTERS				0x03
+#define MODBUS_FUNCTION_CODE_READ_INPUT_REGISTERS				0x04
+#define MODBUS_FUNCTION_CODE_WRITE_SINGLE_COIL					0x05
+#define MODBUS_FUNCTION_CODE_WRITE_SINGLE_REGISTER				0x06
+#define MODBUS_FUNCTION_CODE_READ_EXCEPTION_STATUS				0x07
+#define MODBUS_FUNCTION_CODE_DIAGNOSTICS						0x08
+#define MODBUS_FUNCTION_CODE_GET_COMM_EVENT_COUNTER				0x0B
+#define MODBUS_FUNCTION_CODE_GET_COMM_EVENT_LOG					0x0C
+#define MODBUS_FUNCTION_CODE_WRITE_MULTIPLE_COILS				0x0F
+#define MODBUS_FUNCTION_CODE_WRITE_MULTIPLE_REGISTERS			0x10
+#define MODBUS_FUNCTION_CODE_REPORT_SLAVE_ID					0x11
+#define MODBUS_FUNCTION_CODE_READ_FILE_RECORD					0x14
+#define MODBUS_FUNCTION_CODE_WRITE_FILE_RECORD					0x15
+#define MODBUS_FUNCTION_CODE_MASK_WRITE_REGISTER				0x16
+#define MODBUS_FUNCTION_CODE_READ_WRITE_MULTIPLE_REGISTERS		0x17
+#define MODBUS_FUNCTION_CODE_READ_FIFO_QUEUE					0x18
+#define MODBUS_FUNCTION_CODE_ENCAPSULATED_INTERFACE_TRANSPORT	0x2B

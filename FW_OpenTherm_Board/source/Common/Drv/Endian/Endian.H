@@ -1,0 +1,50 @@
+/******************************************************************************
+; Resideo Residential Thermal Solutions                                       *
+; Turanka 96/1236                                                             *
+; 627 00 Brno, Czech Republic                                                 *
+;                                                                             *
+; Creation date: 2017-03-24           Author: Stepanek, Michal                *
+;******************************************************************************
+;
+; File: Endian.C
+;
+;******************************************************************************
+; SVN header
+;  $Id: Endian.H 116376 2022-01-17 16:08:00Z Stepanek, Michal $
+******************************************************************************/
+
+
+/******************************************************************************
+; GLOBAL FUNCTIONS
+;*****************************************************************************/
+uint16_t uwEndian_LsbMsbToU16(uint8_t * ptr);
+uint16_t uwEndian_MsbLsbToU16(uint8_t * ptr);
+uint32_t ulEndian_MsbLsbToU24(uint8_t * ptr);
+uint32_t ulEndian_LsbMsbToU32(uint8_t * ptr);
+uint32_t ulEndian_MsbLsbToU32(uint8_t * ptr);
+float32_t fEndian_LsbMsbToFloat(uint8_t * ptr);
+float32_t fEndian_MsbLsbToFloat(uint8_t * ptr);
+float64_t Endian_LsbMsbToDouble(uint8_t * ptr);
+float64_t Endian_MsbLsbToDouble(uint8_t * ptr);
+uint16_t Endian_FloatToMsbLsbH(float32_t f, uint8_t * ptr);
+uint16_t Endian_FloatToMsbLsbL(float32_t f, uint8_t * ptr);
+
+void Endian_U16ToLsbMsb(uint16_t i, uint8_t * ptr);
+void Endian_U16ToMsbLsb(uint16_t i, uint8_t * ptr);
+void Endian_U24ToMsbLsb(uint32_t l, uint8_t * ptr);
+void Endian_U32ToLsbMsb(uint32_t l, uint8_t * ptr);
+void Endian_U32ToMsbLsb(uint32_t l, uint8_t * ptr);
+void Endian_FloatToLsbMsb(float32_t f, uint8_t * ptr);
+void Endian_FloatToMsbLsb(float32_t f, uint8_t * ptr);
+void Endian_DoubleToLsbMsb(float64_t f, uint8_t * ptr);
+void Endian_DoubleToMsbLsb(float64_t f, uint8_t * ptr);
+
+uint32_t ulEndian_U16sToU32(uint16_t lsb, uint16_t msb);
+uint16_t uwEndian_U8sToU16(uint8_t lsb, uint8_t msb);
+uint16_t uwEndian_MsbLsb2U16(uint8_t msb, uint8_t lsb);
+
+void Endian_S16ToMsbLsb(int16_t i, uint8_t * ptr);
+int32_t slEndian_3xU8ToS32(uint8_t msb, uint8_t mid, uint8_t lsb);
+uint32_t ulEndian_3xU8ToU32(uint8_t msb, uint8_t mid, uint8_t lsb);
+
+bool bEndian_FloatCompareMsbLsb(float32_t f, uint8_t * ptr);

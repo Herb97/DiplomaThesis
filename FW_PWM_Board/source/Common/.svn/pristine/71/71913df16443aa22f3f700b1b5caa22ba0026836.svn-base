@@ -1,0 +1,145 @@
+/******************************************************************************
+; Resideo Residential Thermal Solutions                                       *
+; Turanka 96/1236                                                             *
+; 627 00 Brno, Czech Republic                                                 *
+;                                                                             *
+; Creation date: 2008-01-30           Author: Stepanek, Michal                *
+;******************************************************************************
+;
+; File: Endian_Float.C
+;
+;******************************************************************************
+; SVN header
+;  $Id$
+******************************************************************************/
+
+/*
+Funkce pro práci s float jsou compiler specific
+Little endian (MSP430, ARM Cortex-M3)
+*/
+
+#include "..\Endian.H"
+
+float fEndian_MsbLsbToFloat(uint8_t * ptr)
+{
+	float f;
+	*(((uint8_t *)&f)+3)=ptr[0];
+	*(((uint8_t *)&f)+2)=ptr[1];
+	*(((uint8_t *)&f)+1)=ptr[2];
+	*(((uint8_t *)&f)+0)=ptr[3];
+	return f;
+}
+
+void Endian_FloatToMsbLsb(float f, uint8_t * ptr)
+{
+	ptr[0]=*(((uint8_t *)&f)+3);
+	ptr[1]=*(((uint8_t *)&f)+2);
+	ptr[2]=*(((uint8_t *)&f)+1);
+	ptr[3]=*(((uint8_t *)&f)+0);
+}
+
+uint16_t Endian_FloatToMsbLsbH(float f, uint8_t * ptr)
+{
+	uint16_t result;
+  	ptr[0]=*(((uint8_t *)&f)+3);
+	ptr[1]=*(((uint8_t *)&f)+2);
+	result=ptr[0];
+	result<<=8;
+	result|=ptr[1];
+	return result;
+}
+
+uint16_t Endian_FloatToMsbLsbL(float f, uint8_t * ptr)
+{
+	uint16_t result;
+  	ptr[0]=*(((uint8_t *)&f)+1);
+	ptr[1]=*(((uint8_t *)&f)+0);
+	result=ptr[0];
+	result<<=8;
+	result|=ptr[1];
+	return result;
+}
+
+double Endian_MsbLsbToDouble(uint8_t * ptr)
+{
+	double f;
+	*(((uint8_t *)&f)+7)=ptr[0];
+	*(((uint8_t *)&f)+6)=ptr[1];
+	*(((uint8_t *)&f)+5)=ptr[2];
+	*(((uint8_t *)&f)+4)=ptr[3];
+	*(((uint8_t *)&f)+3)=ptr[4];
+	*(((uint8_t *)&f)+2)=ptr[5];
+	*(((uint8_t *)&f)+1)=ptr[6];
+	*(((uint8_t *)&f)+0)=ptr[7];
+	return f;
+}
+
+void Endian_DoubleToMsbLsb(double f, uint8_t * ptr)
+{
+	ptr[0]=*(((uint8_t *)&f)+7);
+	ptr[1]=*(((uint8_t *)&f)+6);
+	ptr[2]=*(((uint8_t *)&f)+5);
+	ptr[3]=*(((uint8_t *)&f)+4);
+	ptr[4]=*(((uint8_t *)&f)+3);
+	ptr[5]=*(((uint8_t *)&f)+2);
+	ptr[6]=*(((uint8_t *)&f)+1);
+	ptr[7]=*(((uint8_t *)&f)+0);
+}
+
+float fEndian_LsbMsbToFloat(uint8_t * ptr)
+{
+	float f;
+	*(((uint8_t *)&f)+0)=ptr[0];
+	*(((uint8_t *)&f)+1)=ptr[1];
+	*(((uint8_t *)&f)+2)=ptr[2];
+	*(((uint8_t *)&f)+3)=ptr[3];
+	return f;
+}
+
+void Endian_FloatToLsbMsb(float f, uint8_t * ptr)
+{
+	ptr[0]=*(((uint8_t *)&f)+0);
+	ptr[1]=*(((uint8_t *)&f)+1);
+	ptr[2]=*(((uint8_t *)&f)+2);
+	ptr[3]=*(((uint8_t *)&f)+3);
+}
+
+double Endian_LsbMsbToDouble(uint8_t * ptr)
+{
+	double f;
+	*(((uint8_t *)&f)+0)=ptr[0];
+	*(((uint8_t *)&f)+1)=ptr[1];
+	*(((uint8_t *)&f)+2)=ptr[2];
+	*(((uint8_t *)&f)+3)=ptr[3];
+	*(((uint8_t *)&f)+4)=ptr[4];
+	*(((uint8_t *)&f)+5)=ptr[5];
+	*(((uint8_t *)&f)+6)=ptr[6];
+	*(((uint8_t *)&f)+7)=ptr[7];
+	return f;
+}
+
+void Endian_DoubleToLsbMsb(double f, uint8_t * ptr)
+{
+	ptr[0]=*(((uint8_t *)&f)+0);
+	ptr[1]=*(((uint8_t *)&f)+1);
+	ptr[2]=*(((uint8_t *)&f)+2);
+	ptr[3]=*(((uint8_t *)&f)+3);
+	ptr[4]=*(((uint8_t *)&f)+4);
+	ptr[5]=*(((uint8_t *)&f)+5);
+	ptr[6]=*(((uint8_t *)&f)+6);
+	ptr[7]=*(((uint8_t *)&f)+7);
+}
+
+// zde musí být binární porovnání, jinak by porovnání dvou úplnì stejných NaN skonèilo chybnì
+bool Endian_FloatCompareMsbLsb(float f, uint8_t * ptr)
+{
+	if((ptr[0]==*(((uint8_t *)&f)+3))&&(ptr[1]==*(((uint8_t *)&f)+2))&&(ptr[2]==*(((uint8_t *)&f)+1))&&(ptr[3]==*(((uint8_t *)&f)+0)))
+	{
+		return false;	// the same
+	}
+	else
+	{
+		return true;	// changed
+	}
+}
+

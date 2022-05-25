@@ -1,0 +1,24 @@
+/******************************************************************************
+; Resideo Residential Thermal Solutions                                       *
+; Turanka 96/1236                                                             *
+; 627 00 Brno, Czech Republic                                                 *
+;                                                                             *
+; Creation date: 2020-04-12           Author: Stepanek, Michal                *
+;******************************************************************************
+;
+; File: AD5270_Register.C
+;
+;******************************************************************************
+; SVN header
+;  $Id$
+******************************************************************************/
+
+
+/******************************************************************************
+; GLOBAL FUNCTIONS
+;*****************************************************************************/
+void AD5270_WriteRDAC(uint16_t luwRDAC);
+void AD5270_WriteControlRegister(uint16_t luwControlRegister);
+void AD5270_NormalMode(void);
+void AD5270_ShutdownMode(void);
+void AD5270_AllowUpdateOfWiperPosition(void);

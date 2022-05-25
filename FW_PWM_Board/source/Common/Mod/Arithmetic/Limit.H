@@ -1,0 +1,41 @@
+/******************************************************************************
+; Resideo Residential Thermal Solutions                                       *
+; Turanka 96/1236                                                             *
+; 627 00 Brno, Czech Republic                                                 *
+;                                                                             *
+; Creation date: 2017-04-11           Author: Stepanek, Michal                *
+;******************************************************************************
+;
+; File: Limit.H
+;
+;******************************************************************************
+; SVN header
+;  $Id: Limit.H 118384 2022-05-05 13:54:05Z Stepanek, Michal $
+******************************************************************************/
+
+
+/******************************************************************************
+; GLOBAL FUNCTIONS
+;*****************************************************************************/
+uint8_t ubLess(uint8_t x, uint8_t y);
+uint8_t ubGreater(uint8_t x, uint8_t y);
+uint16_t uwLess(uint16_t x, uint16_t y);
+uint16_t uwGreater(uint16_t x, uint16_t y);
+uint32_t ulLess(uint32_t x, uint32_t y);
+uint32_t ulGreater(uint32_t x, uint32_t y);
+
+int8_t sbLess(int8_t x, int8_t y);
+int8_t sbGreater(int8_t x, int8_t y);
+int16_t swLess(int16_t x, int16_t y);
+int16_t swGreater(int16_t x, int16_t y);
+int32_t slLess(int32_t x, int32_t y);
+int32_t slGreater(int32_t x, int32_t y);
+
+uint8_t ubLimit(uint8_t lubValue, uint8_t lubMin, uint8_t lubMax);
+int8_t sbLimit(int8_t lsbValue, int8_t lsbMin, int8_t lsbMax);
+uint16_t uwLimit(uint16_t luwValue, uint16_t luwMin, uint16_t luwMax);
+int16_t swLimit(int16_t lswValue, int16_t lswMin, int16_t lswMax);
+uint32_t ulLimit(uint32_t lulValue, uint32_t lulMin, uint32_t lulMax);
+int32_t slLimit(int32_t lslValue, int32_t lslMin, int32_t lslMax);
+float32_t fLimit(float32_t lfValue, float32_t lfMin, float32_t lfMax);
+

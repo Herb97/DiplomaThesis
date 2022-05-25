@@ -1,0 +1,28 @@
+/******************************************************************************
+; Resideo Residential Thermal Solutions                                       *
+; Turanka 96/1236                                                             *
+; 627 00 Brno, Czech Republic                                                 *
+;                                                                             *
+; Creation date: 2020-06-23           Author: Stepanek, Michal                *
+;******************************************************************************
+;
+; File: SystemTick.H
+;
+;******************************************************************************
+; SVN header
+;  $Id$
+******************************************************************************/
+
+
+/******************************************************************************
+; GLOBAL FUNCTIONS
+;*****************************************************************************/
+uint32_t SystemTick_Get(void);
+void SystemTick_Tick(void);
+bool SystemTick_Expired(uint32_t lulStart, uint32_t lulDelay);
+
+//#define SYSTEM_TICKS_PER_MIN	((SYSTEM_TICKS_PER_SECOND) * 60UL)
+//#define SYSTEM_TICKS_PER_HOUR	((SYSTEM_TICKS_PER_SECOND) * 60UL * 60UL)
+//#define SYSTEM_TICKS_PER_DAY	((SYSTEM_TICKS_PER_SECOND) * 60UL * 60UL * 24UL)
+//#define SYSTEM_TICKS_PER_YEAR	((SYSTEM_TICKS_PER_SECOND) * 60UL * 60UL * 24UL * 365UL)
+
